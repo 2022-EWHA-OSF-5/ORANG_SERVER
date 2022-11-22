@@ -1,74 +1,28 @@
 from flask import Flask, current_app
-from flask.views import MethodView
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from config import *
+import os
+from models import db
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+basdir = os.path.abspath(os.path.dirname(__file__))
+# basdir 경로안에 DB파일 만들기
+dbfile = os.path.join(basdir, 'db.sqlite')
 
-class User(db.Model):
-    __tablename__ = 'users'
-    id = db.db.Column(db.db.Integer, primary_key=True, unique=True, autoincrement=True)
-    username = db.db.Column(db.db.String(50), unique=True)
-    password = db.db.Column(db.db.String(120))
+# 내가 사용 할 DB URI
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + dbfile
+# 비지니스 로직이 끝날때 Commit 실행(DB반영)
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+# 수정사항에 대한 TRACK
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# SECRET_KEY
+app.config['SECRET_KEY'] = 'jqiowejrojzxcovnklqnweiorjqwoijroi'
 
-    Reviews = db.relationship('Review', backref='user', lazy=True)
+db.init_app(app)
+db.app = app
+with app.app_context():
+    db.create_all()
 
-    def __init__(self, username=None, password=None):
-        self.username = username
-        self.password = password
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', port=5000, debug=True)
 
-    def __repr__(self):
-        return '<User %r>' % (self.name)
-
-class Restaurant(db.Model):
-    __tablename__ = 'restaurants'
-    id = db.db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
-    name = db.Column(db.String(50))
-    image = db.Column(db.String(200))
-    address = db.Column(db.String(200))
-    category = db.Column(db.String(120))
-    phone = db.Column(db.String(120))
-    description = db.Column(db.String(200))
-    homepage = db.Column(db.String(200))
-    score = db.Column(db.Float)
-    review_count = db.Column(db.Integer)
-
-    Menus = db.relationship('Menu', backref='restaurant', lazy=True)
-    Reviews = db.relationship('Review', backref='restaurant', lazy=True)
-
-    def __repr__(self):
-        return '<Restaurant %r>' % (self.name)
-
-class Menu(db.Model):
-    __tablename__ = 'menus'
-    id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
-    name = db.Column(db.String(50))
-    price = db.Column(db.Integer)
-    image = db.Column(db.String(200))
-    
-    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'), nullable=False)
-
-    def __repr__(self):
-        return '<Menu %r>' % (self.name)
-
-class Review(db.Model):
-    __tablename__ = 'reviews'
-    id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
-    content = db.Column(db.String())
-    score = db.Column(db.Integer)
-    image = db.Column(db.String(200))
-
-    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-    def __repr__(self):
-        return '<Review %r>' % (self.content)
-
-
-if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=8000)
