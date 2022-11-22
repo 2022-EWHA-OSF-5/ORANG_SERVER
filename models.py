@@ -1,14 +1,15 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
-from sqlalchemy.orm import relationship
-from database import Base
+from flask_sqlalchemy import SQLAlchemy
 
-class User(Base):
+db = SQLAlchemy()
+
+class User(db.Model):
     __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
-    username = Column(String(50), unique=True)
-    password = Column(String(120))
 
-    Reviews = relationship('Review', backref='user', lazy=True)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True)
+    password = db.Column(db.String(120))
+
+    Reviews = db.relationship('Review', backref='user', lazy=True)
 
     def __init__(self, username=None, password=None):
         self.username = username
@@ -17,46 +18,46 @@ class User(Base):
     def __repr__(self):
         return '<User %r>' % (self.name)
 
-class Restaurant(Base):
+class Restaurant(db.Model):
     __tablename__ = 'restaurants'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(50))
-    image = Column(String(200))
-    address = Column(String(200))
-    category = Column(String(120))
-    phone = Column(String(120))
-    description = Column(String(200))
-    homepage = Column(String(200))
-    score = Column(Float)
-    review_count = Column(Integer)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    image = db.Column(db.String(200))
+    address = db.Column(db.String(200))
+    category = db.Column(db.String(120))
+    phone = db.Column(db.String(120))
+    description = db.Column(db.String(200))
+    homepage = db.Column(db.String(200))
+    score = db.Column(db.Float)
+    review_count = db.Column(db.Integer)
 
-    Menus = relationship('Menu', backref='restaurant', lazy=True)
-    Reviews = relationship('Review', backref='restaurant', lazy=True)
+    Menus = db.relationship('Menu', backref='restaurant', lazy=True)
+    Reviews = db.relationship('Review', backref='restaurant', lazy=True)
 
     def __repr__(self):
         return '<Restaurant %r>' % (self.name)
 
-class Menu(Base):
+class Menu(db.Model):
     __tablename__ = 'menus'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(50))
-    price = Column(Integer)
-    image = Column(String(200))
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    price = db.Column(db.Integer)
+    image = db.Column(db.String(200))
     
-    restaurant_id = Column(Integer, ForeignKey('restaurant.id'), nullable=False)
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'), nullable=False)
 
     def __repr__(self):
         return '<Menu %r>' % (self.name)
 
-class Review(Base):
+class Review(db.Model):
     __tablename__ = 'reviews'
-    id = Column(Integer, primary_key=True)
-    content = Column(String())
-    score = Column(Integer)
-    image = Column(String(200))
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String())
+    score = db.Column(db.Integer)
+    image = db.Column(db.String(200))
 
-    restaurant_id = Column(Integer, ForeignKey('restaurant.id'), nullable=False)
-    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def __repr__(self):
         return '<Review %r>' % (self.content)
