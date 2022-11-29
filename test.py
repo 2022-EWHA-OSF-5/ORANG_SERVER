@@ -86,23 +86,30 @@ class bookmark(Resource):
 @api.route('/restaurants/<int:primary_key>/reviews')
 class review_register(Resource):
     def post(self, primary_key):
+        score = request.form['score']
+        content = request.form['content']
+        image = request.form['image']
+        #image.save(secure_filename(image.filename))
+        review = {'score':score, 'content':content, 'image':image}
+        return jsonify(review)
+
         """""
         if not session.get('logged_in'):
             flash("로그인 후 이용해주세요!")
-        """""
+        conn = sqlite3.connect("db.sqlite")
+        cur = conn.cursor()
         try:
             score = request.form['score']
             content = request.form['content']
             image = request.file['image']
             image.save(secure_filename(image.filename))
             with sqlite3.connect("db.sqlite") as conn:
-                cur = conn.cursor()
-                cur.execute('INSERT INTO reviews (score, content, image) VALUES (?,?,?)', (score, content, image))
+                cur.execute('INSERT INTO reviews (score, content) VALUES (?,?)', (score, content))
                 conn.commit()
-                review = {'score' : 'score', 'content' : 'content', 'image' : 'image'}
         finally:
             conn.close()
-            return jsonify(review)
+            return jsonify()
+        """""
    
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)
