@@ -4,7 +4,6 @@ db = SQLAlchemy()
 
 class User(db.Model):
     __tablename__ = 'users'
-
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(120))
@@ -15,8 +14,14 @@ class User(db.Model):
         self.username = username
         self.password = password
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'username': self.username
+        }
+
     def __repr__(self):
-        return '<User %r>' % (self.name)
+        return '<User %r>' % (self.username)
 
 class Restaurant(db.Model):
     __tablename__ = 'restaurants'
@@ -34,6 +39,20 @@ class Restaurant(db.Model):
     Menus = db.relationship('Menu', backref='restaurant', lazy=True)
     Reviews = db.relationship('Review', backref='restaurant', lazy=True)
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'image': self.image,
+            'address': self.address,
+            'category': self.category,
+            'phone': self.phone,
+            'description': self.description,
+            'homepage': self.homepage,
+            'score': self.score,
+            'review_count': self.review_count,
+        }
+
     def __repr__(self):
         return '<Restaurant %r>' % (self.name)
 
@@ -45,6 +64,14 @@ class Menu(db.Model):
     image = db.Column(db.String(200))
     
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'), nullable=False)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'price': self.price,
+            'image': self.image
+        }
 
     def __repr__(self):
         return '<Menu %r>' % (self.name)
@@ -58,6 +85,14 @@ class Review(db.Model):
 
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'content': self.content,
+            'score': self.score,
+            'image': self.image
+        }
 
     def __repr__(self):
         return '<Review %r>' % (self.content)

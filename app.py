@@ -66,6 +66,38 @@ class Login(Resource):
         }
         return return_data
 
+#식당 등록
+@api.route('/restaurants')
+class RestaurantAPI(Resource):
+    def post(self): 
+        if request.files["image"]:
+            image_file=request.files["image"] 
+            image_path = "static/image/restaurant/{}".format(image_file.filename)
+            image_file.save(image_path) 
+        else:
+            image_path=""
+
+        data = request.form
+        restaurant = Restaurant(name=data['name'], image=image_path, address=data['address'], category=data['category'], phone=data['phone'], description=data['description'], homepage=data['homepage'], score=0.0, review_count=0)
+        try:
+            db.session.add(restaurant)
+            db.session.commit()
+            db.session.refresh(restaurant)
+        except:
+            db.session.rollback()
+            raise
+        finally:
+            db.session.close() 
+
+        restaurant = Restaurant.query.filter(Restaurant.id == restaurant.id).first()
+
+        return_data = {
+            'message': '식당 등록 성공',
+            'data': restaurant.serialize()
+        }
+        return return_data
+        
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
 
