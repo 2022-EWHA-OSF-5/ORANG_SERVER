@@ -53,12 +53,8 @@ class detail_page(Resource):
 @api.route('/restaurant/<int:primary_key>/menu_detail')
 class detail_menu(Resource):
     def get(self, primary_key):
-        menus = Menu.query.filter(Menu.restaurant_id == primary_key).all()
-        return_data = {
-            'message': '맛집 세부 화면(정보) 조회 성공',
-            'data': [menu.serialize() for menu in menus]
-        }
-        return return_data
+        
+        return 
         
 
 #맛집 세부 화면 - 메뉴 - 전체 메뉴 보기
