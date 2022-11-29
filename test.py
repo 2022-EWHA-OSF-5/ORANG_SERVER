@@ -1,9 +1,8 @@
-from flask import Flask, request, jsonify, session, abort
+from flask import Flask, request, jsonify, session, abort, flash
 from flask_restx import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from models import db
-from flask_paginate import get_page_args
 import sqlite3
 
 app = Flask(__name__)
@@ -12,30 +11,19 @@ db = SQLAlchemy()
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' 
 app.config['JSON_AS_ASCII'] = False
 
-
-#리스트 화면 (필터링 - 위치, 카테고리)
+#리스트 화면 (필터링 - 카테고리)
 @api.route('/restaurant')
 class restaurant_list(Resource):
     def get(self):
-        conn = sqlite3.connect("db.sqlite")
-        cur = conn.cursor()
-        cur.execute('SELECT name, address, category, description, score, review_count FROM restaurants')
-        return jsonify(cur.fetchall())
-
-@api.route('/restaurant/<string:address>/')
-class restaurant_list(Resource):
-    def get(self, address):
-        conn = sqlite3.connect("db.sqlite")
-        cur = conn.cursor()
-        cur.execute('SELECT name, address, category, description, score, review_count FROM restaurants WHERE address=address')
-        return jsonify(cur.fetchall())
-
-@api.route('/restaurant/<string:category>/')
-class restaurant_list(Resource):
-    def get(self, category):
-        conn = sqlite3.connect("db.sqlite")
-        cur = conn.cursor()
-        cur.execute('SELECT name, address, category, description, score, review_count FROM restaurants WHERE category=category')
+        category = request.args.get("category", "all")
+        if category=="all":
+            conn = sqlite3.connect("db.sqlite")
+            cur = conn.cursor()
+            cur.execute('SELECT name, address, category, description, score, review_count FROM restaurants')
+        else:
+            conn = sqlite3.connect("db.sqlite")
+            cur = conn.cursor()
+            cur.execute('SELECT name, address, category, description, score, review_count FROM restaurants WHERE category=category')
         return jsonify(cur.fetchall())
 
 #맛집 세부 화면 - 정보
@@ -46,6 +34,7 @@ class detail_page(Resource):
         cur = conn.cursor()
         cur.execute('SELECT * FROM restaurants')
         return jsonify(cur.fetchall())
+
 
 #맛집 세부 화면 - 메뉴
 @api.route('/restaurant/<int:primary_key>/menu_detail')
@@ -83,18 +72,24 @@ class detail_review(Resource):
         cur.execute('SELECT * FROM reviews')
         return jsonify(cur.fetchall())
 
-#북마크 & 북마크 취소
-@api.route('/restaurants/<int:restaurant_id>/bookmarks')
+"""""
+@api.route('/restaurant/<int:primary_key>/bookmark')
 class bookmark(Resource):
-    def post(self):
-        return
+    def post(self, primary_key):
+
+        conn = sqlite3.connect("db.sqlite")
+        cur = conn.cursor()
+        cur.execute('INSERT INTO bookmarks ')
+"""""
 
 #리뷰 등록 화면
-@api.route('/restaurants/<int:restaurant_id>/reviews')
+@api.route('/restaurants/<int:primary_key>/reviews')
 class review_register(Resource):
-    def post(self, restaurant_id):
+    def post(self, primary_key):
+        """""
         if not session.get('logged_in'):
-            abort(401)
+            flash("로그인 후 이용해주세요!")
+        """""
         try:
             score = request.form['score']
             content = request.form['content']
