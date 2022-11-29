@@ -12,6 +12,7 @@ db = SQLAlchemy()
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' 
 app.config['JSON_AS_ASCII'] = False
 
+
 #리스트 화면 (필터링 - 위치, 카테고리)
 @api.route('/restaurant')
 class restaurant_list(Resource):
