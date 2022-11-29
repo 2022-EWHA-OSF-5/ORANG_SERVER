@@ -166,3 +166,17 @@ class ReviewAPI(Resource):
         }
         return return_data
 
+#내가 쓴 리뷰
+@api.route('/mypage/review')
+class MyReview(Resource):
+    def get(self): 
+        data = request.get_json()
+        reviews = Review.query.filter(Review.user_id == data['user_id']).all()
+        return_data = {
+            'message': '작성한 리뷰 조회 성공',
+            'data': [review.serialize() for review in reviews]
+        }
+        return return_data
+
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', port=5000, debug=True)
