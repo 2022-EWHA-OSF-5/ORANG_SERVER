@@ -7,7 +7,6 @@ import sqlite3, os
 
 app = Flask(__name__)
 api = Api(app)
-app.config['JSON_AS_ASCII'] = False
 
 basdir = os.path.abspath(os.path.dirname(__file__))
 dbfile = os.path.join(basdir, 'db.sqlite')
@@ -40,22 +39,27 @@ class restaurant_list(Resource):
         return return_data
 
 #맛집 세부 화면 - 정보
-@api.route('/restaurant/<int:primary_key>/')
+@api.route('/restaurant/<int:primary_key>')
 class detail_page(Resource):
     def get(self, primary_key):
-        conn = sqlite3.connect("db.sqlite")
-        cur = conn.cursor()
-        cur.execute('SELECT name FROM restaurants')
-        return jsonify(cur.fetchall())
+        restaurants = Restaurant.query.filter(Restaurant.id == primary_key).all()
+        return_data = {
+            'message': '맛집 세부 화면(정보) 조회 성공',
+            'data': [restaurant.serialize() for restaurant in restaurants]
+        }
+        return return_data
 
 #맛집 세부 화면 - 메뉴
-@api.route('/restaurant/<int:pk>/menu_detail')
+@api.route('/restaurant/<int:primary_key>/menu_detail')
 class detail_menu(Resource):
-    def get(self, pk):
-        conn = sqlite3.connect("db.sqlite")
-        cur = conn.cursor()
-        cur.execute('SELECT * FROM menus')
-        return jsonify(cur.fetchmany(size=3))
+    def get(self, primary_key):
+        menus = Menu.query.filter(Menu.restaurant_id == primary_key).all()
+        return_data = {
+            'message': '맛집 세부 화면(정보) 조회 성공',
+            'data': [menu.serialize() for menu in menus]
+        }
+        return return_data
+        
 
 #맛집 세부 화면 - 메뉴 - 전체 메뉴 보기
 @api.route('/restaurant/<int:primary_key>/menu_detail/all')
