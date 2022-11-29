@@ -11,22 +11,33 @@ app = Flask(__name__)
 api = Api(app) 
 
 basdir = os.path.abspath(os.path.dirname(__file__))
-# basdir 경로안에 DB파일 만들기
 dbfile = os.path.join(basdir, 'db.sqlite')
 
-# 내가 사용 할 DB URI
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + dbfile
-# 비지니스 로직이 끝날때 Commit 실행(DB반영)
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
-# 수정사항에 대한 TRACK
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# SECRET_KEY
 app.config['SECRET_KEY'] = 'jqiowejrojzxcovnklqnweiorjqwoijroi'
 
 db.init_app(app)
 db.app = app
 with app.app_context():
     db.create_all()
+
+#메인 페이지
+@api.route('/home')
+class MainAPI(Resource):
+    def get(self):
+        reviews = Review.query.limit(5).all()
+        restaurants = Restaurant.query.order_by(Restaurant.review_count.desc()).limit(5).all()
+        
+        return_data = {
+            'message': '메인 페이지 조회 성공',
+            'data': {
+                'reviews' : [review.serialize() for review in reviews],
+                'restaurants' : [restaurant.serialize() for restaurant in restaurants]
+            }
+        }
+        return return_data
 
 #회원가입
 @api.route('/signup')
@@ -89,7 +100,7 @@ class RestaurantAPI(Resource):
         finally:
             db.session.close() 
 
-        restaurant = Restaurant.query.filter(Restaurant.id == restaurant.id).first()
+        restaurant = Restaurant.query.get(restaurant.id)
 
         return_data = {
             'message': '식당 등록 성공',
@@ -121,7 +132,7 @@ class MenuAPI(Resource):
         finally:
             db.session.close() 
 
-        menu = Menu.query.filter(Menu.id == menu.id).first()
+        menu = Menu.query.get(menu.id)
 
         return_data = {
             'message': '메뉴 등록 성공',
@@ -129,12 +140,7 @@ class MenuAPI(Resource):
         }
         return return_data
 
-    def get(self, pk):
-        menus = Menu.query.filter(Menu.restaurant_id == pk).all()
-        for menu in menus:
-            print(menu)
-
-#메뉴 등록
+#리뷰 등록
 @api.route('/restaurants/<int:pk>/reviews')
 class ReviewAPI(Resource):
     def post(self, pk): 
@@ -158,7 +164,11 @@ class ReviewAPI(Resource):
         finally:
             db.session.close() 
 
-        review = Review.query.filter(Review.id == review.id).first()
+        restaurant = Restaurant.query.get(pk)
+        restaurant.review_count += 1
+        restaurant.score = (restaurant.score*(restaurant.review_count-1)+review.score)/restaurant.review_count
+
+        review = Review.query.get(review.id)
 
         return_data = {
             'message': '리뷰 등록 성공',
