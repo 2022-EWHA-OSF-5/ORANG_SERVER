@@ -129,7 +129,40 @@ class MenuAPI(Resource):
         }
         return return_data
 
+    def get(self, pk):
+        menus = Menu.query.filter(Menu.restaurant_id == pk).all()
+        for menu in menus:
+            print(menu)
 
-if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000, debug=True)
+#메뉴 등록
+@api.route('/restaurants/<int:pk>/reviews')
+class ReviewAPI(Resource):
+    def post(self, pk): 
+        if request.files["image"]:
+            image_file=request.files["image"] 
+            image_path = "static/image/menu/{}".format(image_file.filename)
+            image_file.save(image_path) 
+        else:
+            image_path=""
+
+        data = request.form
+        review = Review(restaurant_id=pk, user_id=data['user_id'], content=data['content'], score=data['score'], image=image_path)
+
+        try:
+            db.session.add(review)
+            db.session.commit()
+            db.session.refresh(review)
+        except:
+            db.session.rollback()
+            raise
+        finally:
+            db.session.close() 
+
+        review = Review.query.filter(Review.id == review.id).first()
+
+        return_data = {
+            'message': '리뷰 등록 성공',
+            'data': review.serialize()
+        }
+        return return_data
 
