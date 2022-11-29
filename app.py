@@ -96,7 +96,39 @@ class RestaurantAPI(Resource):
             'data': restaurant.serialize()
         }
         return return_data
-        
+
+#메뉴 등록
+@api.route('/restaurants/<int:pk>/menus')
+class MenuAPI(Resource):
+    def post(self, pk): 
+        if request.files["image"]:
+            image_file=request.files["image"] 
+            image_path = "static/image/menu/{}".format(image_file.filename)
+            #image_file.save(image_path) 
+        else:
+            image_path=""
+
+        data = request.form
+        menu = Menu(restaurant_id=pk, name=data['name'], price=data['price'], image=image_path)
+
+        try:
+            db.session.add(menu)
+            db.session.commit()
+            db.session.refresh(menu)
+        except:
+            db.session.rollback()
+            raise
+        finally:
+            db.session.close() 
+
+        menu = Menu.query.filter(Menu.id == menu.id).first()
+
+        return_data = {
+            'message': '메뉴 등록 성공',
+            'data': menu.serialize()
+        }
+        return return_data
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
