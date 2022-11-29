@@ -72,15 +72,15 @@ class detail_review(Resource):
         cur.execute('SELECT * FROM reviews')
         return jsonify(cur.fetchall())
 
-"""""
+
 @api.route('/restaurant/<int:primary_key>/bookmark')
 class bookmark(Resource):
     def post(self, primary_key):
-
+        
         conn = sqlite3.connect("db.sqlite")
         cur = conn.cursor()
         cur.execute('INSERT INTO bookmarks ')
-"""""
+
 
 #리뷰 등록 화면
 @api.route('/restaurants/<int:primary_key>/reviews')
@@ -99,9 +99,10 @@ class review_register(Resource):
                 cur = conn.cursor()
                 cur.execute('INSERT INTO reviews (score, content, image) VALUES (?,?,?)', (score, content, image))
                 conn.commit()
+                review = {'score' : 'score', 'content' : 'content', 'image' : 'image'}
         finally:
             conn.close()
-            return
+            return jsonify(review)
    
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)
