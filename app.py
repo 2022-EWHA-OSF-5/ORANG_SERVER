@@ -56,7 +56,7 @@ class Signup(Resource):
         finally:
             db.session.close() 
 
-        user = User.query.filter(User.id == user.id).first()
+        user = User.query.get(user.id)
 
         return_data = {
             'message': '유저 등록 성공',
