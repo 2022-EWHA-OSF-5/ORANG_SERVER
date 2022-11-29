@@ -104,7 +104,7 @@ class MenuAPI(Resource):
         if request.files["image"]:
             image_file=request.files["image"] 
             image_path = "static/image/menu/{}".format(image_file.filename)
-            #image_file.save(image_path) 
+            image_file.save(image_path) 
         else:
             image_path=""
 
