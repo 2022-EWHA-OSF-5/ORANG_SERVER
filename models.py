@@ -87,8 +87,11 @@ class Review(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def serialize(self):
+        restaurant = Restaurant.query.filter(Restaurant.id == self.restaurant_id).first()
+        
         return {
             'id': self.id,
+            'restaurant': restaurant.name,
             'content': self.content,
             'score': self.score,
             'image': self.image
