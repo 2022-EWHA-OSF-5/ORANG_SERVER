@@ -53,6 +53,18 @@ class Signup(Resource):
         }
         return return_data
 
+#로그인
+@api.route('/login')
+class Login(Resource):
+    def post(self): 
+        data = request.get_json()
+        user = User.query.filter(User.username == data['username'], User.password == data['password']).first()
+
+        return_data = {
+            'message': '유저 인증 성공',
+            'data': user.serialize()
+        }
+        return return_data
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
