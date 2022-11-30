@@ -53,36 +53,46 @@ class detail_page(Resource):
 @api.route('/restaurant/<int:primary_key>/menu_detail')
 class detail_menu(Resource):
     def get(self, primary_key):
-        
-        return 
+        menus = Menu.query.filter(Menu.restaurant_id == primary_key, Menu.id <= 2).all()
+        return_data = {
+            'message': '맛집 세부 화면(메뉴) 조회 성공',
+            'data': [restaurant.serialize() for restaurant in menus]
+        }
+        return return_data
         
 
-#맛집 세부 화면 - 메뉴 - 전체 메뉴 보기
+#맛집 세부 화면 - 전체 메뉴 보기
 @api.route('/restaurant/<int:primary_key>/menu_detail/all')
 class detail_menu(Resource):
     def get(self, primary_key):
-        conn = sqlite3.connect("db.sqlite")
-        cur = conn.cursor()
-        cur.execute('SELECT * FROM menus')
-        return jsonify(cur.fetchall())
+        menus = Menu.query.filter(Menu.restaurant_id == primary_key).all()
+        return_data = {
+            'message': '맛집 세부 화면(메뉴 전체) 조회 성공',
+            'data': [restaurant.serialize() for restaurant in menus]
+        }
+        return return_data
 
 #맛집 세부 화면 - 리뷰
 @api.route('/restaurant/<int:primary_key>/review_detail')
 class detail_review(Resource):
     def get(self, primary_key):
-        conn = sqlite3.connect("db.sqlite")
-        cur = conn.cursor()
-        cur.execute('SELECT * FROM reviews')
-        return jsonify(cur.fetchmany(size=2))
+        menus = Menu.query.filter(Menu.restaurant_id == primary_key, Menu.id <= 2).all()
+        return_data = {
+            'message': '맛집 세부 화면(리뷰) 조회 성공',
+            'data': [restaurant.serialize() for restaurant in menus]
+        }
+        return return_data
 
 #맛집 세부 화면 - 리뷰 - 전체 리뷰 보기
 @api.route('/restaurant/<int:primary_key>/review_detail/all')
 class detail_review(Resource):
     def get(self, primary_key):
-        conn = sqlite3.connect("db.sqlite")
-        cur = conn.cursor()
-        cur.execute('SELECT * FROM reviews')
-        return jsonify(cur.fetchall())
+        menus = Menu.query.filter(Menu.restaurant_id == primary_key).all()
+        return_data = {
+            'message': '맛집 세부 화면(리뷰) 조회 성공',
+            'data': [restaurant.serialize() for restaurant in menus]
+        }
+        return return_data
 
 #북마크 추가
 @api.route('/restaurant/<int:primary_key>/bookmark')
