@@ -53,10 +53,10 @@ class detail_page(Resource):
 @api.route('/restaurant/<int:primary_key>/menu_detail')
 class detail_menu(Resource):
     def get(self, primary_key):
-        menus = Menu.query.filter(Menu.restaurant_id == primary_key, Menu.id <= 2).all()
+        menus = Menu.query.filter(Menu.restaurant_id == primary_key, Menu.id <= 3).all()
         return_data = {
             'message': '맛집 세부 화면(메뉴) 조회 성공',
-            'data': [restaurant.serialize() for restaurant in menus]
+            'data': [menu.serialize() for menu in menus]
         }
         return return_data
         
@@ -68,7 +68,7 @@ class detail_menu(Resource):
         menus = Menu.query.filter(Menu.restaurant_id == primary_key).all()
         return_data = {
             'message': '맛집 세부 화면(메뉴 전체) 조회 성공',
-            'data': [restaurant.serialize() for restaurant in menus]
+            'data': [menu.serialize() for menu in menus]
         }
         return return_data
 
@@ -76,10 +76,10 @@ class detail_menu(Resource):
 @api.route('/restaurant/<int:primary_key>/review_detail')
 class detail_review(Resource):
     def get(self, primary_key):
-        menus = Menu.query.filter(Menu.restaurant_id == primary_key, Menu.id <= 2).all()
+        reviews = Review.query.filter(Review.restaurant_id == primary_key, Review.id <= 3).all()
         return_data = {
             'message': '맛집 세부 화면(리뷰) 조회 성공',
-            'data': [restaurant.serialize() for restaurant in menus]
+            'data': [review.serialize() for review in reviews]
         }
         return return_data
 
@@ -87,10 +87,10 @@ class detail_review(Resource):
 @api.route('/restaurant/<int:primary_key>/review_detail/all')
 class detail_review(Resource):
     def get(self, primary_key):
-        menus = Menu.query.filter(Menu.restaurant_id == primary_key).all()
+        reviews = Review.query.filter(Review.restaurant_id == primary_key).all()
         return_data = {
-            'message': '맛집 세부 화면(리뷰) 조회 성공',
-            'data': [restaurant.serialize() for restaurant in menus]
+            'message': '맛집 세부 화면(리뷰 전체) 조회 성공',
+            'data': [review.serialize() for review in reviews]
         }
         return return_data
 
