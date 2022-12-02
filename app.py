@@ -178,5 +178,97 @@ class MyReview(Resource):
         }
         return return_data
 
+#리스트 화면 (필터링 - 카테고리)
+@api.route('/restaurant')
+class ListAPI(Resource):
+    def get(self):
+        data = request.get_json()
+        if data['category'] == "all":
+            restaurants = Restaurant.query.all()
+        else:
+            restaurants = Restaurant.query.filter(Restaurant.category == data['category']).all()
+        return_data = {
+                'message': '식당 리스트 조회 성공',
+                'data': [restaurant.serialize() for restaurant in restaurants]
+            }
+        return return_data
+
+#맛집 세부 화면 - 정보
+@api.route('/restaurant/<int:primary_key>')
+class DetailPageAPI(Resource):
+    def get(self, primary_key):
+        restaurants = Restaurant.query.filter(Restaurant.id == primary_key).all()
+        return_data = {
+            'message': '맛집 세부 화면(정보) 조회 성공',
+            'data': [restaurant.serialize() for restaurant in restaurants]
+        }
+        return return_data
+
+#맛집 세부 화면 - 메뉴
+@api.route('/restaurant/<int:primary_key>/menu_detail')
+class DetailMenuAPI(Resource):
+    def get(self, primary_key):
+        menus = Menu.query.filter(Menu.restaurant_id == primary_key, Menu.id <= 3).all()
+        return_data = {
+            'message': '맛집 세부 화면(메뉴) 조회 성공',
+            'data': [menu.serialize() for menu in menus]
+        }
+        return return_data
+        
+
+#맛집 세부 화면 - 전체 메뉴 보기
+@api.route('/restaurant/<int:primary_key>/menu_detail/all')
+class MenuAllAPI(Resource):
+    def get(self, primary_key):
+        menus = Menu.query.filter(Menu.restaurant_id == primary_key).all()
+        return_data = {
+            'message': '맛집 세부 화면(메뉴 전체) 조회 성공',
+            'data': [menu.serialize() for menu in menus]
+        }
+        return return_data
+
+#맛집 세부 화면 - 리뷰
+@api.route('/restaurant/<int:primary_key>/review_detail')
+class DetailReviewAPI(Resource):
+    def get(self, primary_key):
+        reviews = Review.query.filter(Review.restaurant_id == primary_key, Review.id <= 3).all()
+        return_data = {
+            'message': '맛집 세부 화면(리뷰) 조회 성공',
+            'data': [review.serialize() for review in reviews]
+        }
+        return return_data
+
+#맛집 세부 화면 - 리뷰 - 전체 리뷰 보기
+@api.route('/restaurant/<int:primary_key>/review_detail/all')
+class ReviewAllAPI(Resource):
+    def get(self, primary_key):
+        reviews = Review.query.filter(Review.restaurant_id == primary_key).all()
+        return_data = {
+            'message': '맛집 세부 화면(리뷰 전체) 조회 성공',
+            'data': [review.serialize() for review in reviews]
+        }
+        return return_data
+
+#북마크 추가
+@api.route('/restaurant/<int:primary_key>/bookmark')
+class BookmarkAPI(Resource):
+    def post(self, primary_key):
+        data = request.json
+        bookmark = Bookmark(restaurant_id=primary_key, user_id=data['user_id'])
+        try:
+            db.session.add(bookmark)
+            db.session.commit()
+            db.session.refresh(bookmark)
+        except:
+            db.session.rollback()
+            raise
+        finally:
+            db.session.close()
+
+        return_data = {
+            'message': '북마크 추가 성공'
+        }
+        return return_data
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
