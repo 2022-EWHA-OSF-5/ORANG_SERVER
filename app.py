@@ -97,11 +97,22 @@ class detail_review(Resource):
 @api.route('/restaurant/<int:primary_key>/bookmark')
 class bookmark(Resource):
     def post(self, primary_key):
-        conn = sqlite3.connect("db.sqlite")
-        cur = conn.cursor()
-        cur.execute('INSERT INTO bookmarks (id, restauarnt_id, user_id) VALUES (?,?,?)', )
-        conn.commit()
-        flash("북마크에 추가되었습니다!")
+        data = request.json
+        bookmark = Bookmark(restaurant_id=primary_key, user_id=data['user_id'])
+        try:
+            db.session.add(bookmark)
+            db.session.commit()
+            db.session.refresh(bookmark)
+        except:
+            db.session.rollback()
+            raise
+        finally:
+            db.session.close()
+
+        return_data = {
+            'message': '북마크 추가 성공'
+        }
+        return return_data
     
    
 if __name__ == "__main__":
