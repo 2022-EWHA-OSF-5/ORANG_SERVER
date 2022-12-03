@@ -188,6 +188,7 @@ class MyReview(Resource):
 class ListAPI(Resource):
     def get(self):
         category = request.headers.get('Category')
+        print('헤더', category)
         if category == "all":
             restaurants = Restaurant.query.all()
         else:
