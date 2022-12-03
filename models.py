@@ -28,6 +28,7 @@ class Restaurant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
     image = db.Column(db.String(200))
+    location = db.Column(db.String(200))
     address = db.Column(db.String(200))
     category = db.Column(db.String(120))
     phone = db.Column(db.String(120))
@@ -44,6 +45,7 @@ class Restaurant(db.Model):
             'id': self.id,
             'name': self.name,
             'image': self.image,
+            'location': self.location,
             'address': self.address,
             'category': self.category,
             'phone': self.phone,
