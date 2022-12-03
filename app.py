@@ -5,10 +5,12 @@ from werkzeug.utils import secure_filename
 import os
 from models import *
 import sqlite3
-
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app) 
+
 
 basdir = os.path.abspath(os.path.dirname(__file__))
 # basdir 경로안에 DB파일 만들기
@@ -171,6 +173,9 @@ class ReviewAPI(Resource):
 class MyReview(Resource):
     def get(self): 
         user_id = request.headers.get('User')
+        #user_id = request.headers
+
+        print('헤더',user_id)
         reviews = Review.query.filter(Review.user_id == user_id).all()
         return_data = {
             'message': '작성한 리뷰 조회 성공',
