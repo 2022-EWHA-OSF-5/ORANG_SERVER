@@ -187,11 +187,11 @@ class MyReview(Resource):
 @api.route('/restaurant')
 class ListAPI(Resource):
     def get(self):
-        data = request.get_json()
-        if data['category'] == "all":
+        category = request.headers.get('Category')
+        if category == "all":
             restaurants = Restaurant.query.all()
         else:
-            restaurants = Restaurant.query.filter(Restaurant.category == data['category']).all()
+            restaurants = Restaurant.query.filter(Restaurant.category == category).all()
         return_data = {
                 'message': '식당 리스트 조회 성공',
                 'data': [restaurant.serialize() for restaurant in restaurants]
@@ -202,7 +202,9 @@ class ListAPI(Resource):
 @api.route('/restaurant/<int:primary_key>')
 class DetailPageAPI(Resource):
     def get(self, primary_key):
-        restaurants = Restaurant.query.filter(Restaurant.id == primary_key).all()
+        restaurant_id = request.headers.get('Restaurant')
+        print('헤더', restaurant_id)
+        restaurants = Restaurant.query.filter(Restaurant.id == restaurant_id).all()
         return_data = {
             'message': '맛집 세부 화면(정보) 조회 성공',
             'data': [restaurant.serialize() for restaurant in restaurants]
@@ -213,7 +215,9 @@ class DetailPageAPI(Resource):
 @api.route('/restaurant/<int:primary_key>/menu_detail')
 class DetailMenuAPI(Resource):
     def get(self, primary_key):
-        menus = Menu.query.filter(Menu.restaurant_id == primary_key, Menu.id <= 3).all()
+        restaurant_id = request.headers.get('Restaurant')
+        print('헤더', restaurant_id)
+        menus = Menu.query.filter(Menu.restaurant_id == restaurant_id, Menu.id <= 3).all()
         return_data = {
             'message': '맛집 세부 화면(메뉴) 조회 성공',
             'data': [menu.serialize() for menu in menus]
@@ -225,7 +229,9 @@ class DetailMenuAPI(Resource):
 @api.route('/restaurant/<int:primary_key>/menu_detail/all')
 class MenuAllAPI(Resource):
     def get(self, primary_key):
-        menus = Menu.query.filter(Menu.restaurant_id == primary_key).all()
+        restaurant_id = request.headers.get('Restaurant')
+        print('헤더', restaurant_id)
+        menus = Menu.query.filter(Menu.restaurant_id == restaurant_id).all()
         return_data = {
             'message': '맛집 세부 화면(메뉴 전체) 조회 성공',
             'data': [menu.serialize() for menu in menus]
@@ -236,7 +242,9 @@ class MenuAllAPI(Resource):
 @api.route('/restaurant/<int:primary_key>/review_detail')
 class DetailReviewAPI(Resource):
     def get(self, primary_key):
-        reviews = Review.query.filter(Review.restaurant_id == primary_key, Review.id <= 3).all()
+        restaurant_id = request.headers.get('Restaurant')
+        print('헤더', restaurant_id)
+        reviews = Review.query.filter(Review.restaurant_id == restaurant_id, Review.id <= 3).all()
         return_data = {
             'message': '맛집 세부 화면(리뷰) 조회 성공',
             'data': [review.serialize() for review in reviews]
@@ -247,7 +255,9 @@ class DetailReviewAPI(Resource):
 @api.route('/restaurant/<int:primary_key>/review_detail/all')
 class ReviewAllAPI(Resource):
     def get(self, primary_key):
-        reviews = Review.query.filter(Review.restaurant_id == primary_key).all()
+        restaurant_id = request.headers.get('Restaurant')
+        print('헤더', restaurant_id)
+        reviews = Review.query.filter(Review.restaurant_id == restaurant_id).all()
         return_data = {
             'message': '맛집 세부 화면(리뷰 전체) 조회 성공',
             'data': [review.serialize() for review in reviews]
