@@ -170,8 +170,8 @@ class ReviewAPI(Resource):
 @api.route('/mypage/review')
 class MyReview(Resource):
     def get(self): 
-        data = request.get_json()
-        reviews = Review.query.filter(Review.user_id == data['user_id']).all()
+        user_id = request.headers.get('User')
+        reviews = Review.query.filter(Review.user_id == user_id).all()
         return_data = {
             'message': '작성한 리뷰 조회 성공',
             'data': [review.serialize() for review in reviews]
