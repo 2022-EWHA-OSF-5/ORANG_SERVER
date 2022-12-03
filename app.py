@@ -80,7 +80,7 @@ class RestaurantAPI(Resource):
             image_path=""
 
         data = request.form
-        restaurant = Restaurant(name=data['name'], image=image_path, address=data['address'], category=data['category'], phone=data['phone'], description=data['description'], homepage=data['homepage'], score=0.0, review_count=0)
+        restaurant = Restaurant(name=data['name'], image=image_path, location=data['location'], address=data['address'], category=data['category'], phone=data['phone'], description=data['description'], homepage=data['homepage'], score=0.0, review_count=0)
         try:
             db.session.add(restaurant)
             db.session.commit()
