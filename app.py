@@ -35,14 +35,14 @@ with app.app_context():
 @api.route('/home')
 class Home(Resource):
     def get(self):
-        menus = None
-        restaurants = None
+        reviews = Review.query.limit(5).all()
+        restaurants = Restaurant.query.order_by(Restaurant.score.desc()).limit(5).all()
 
         return_data = {
             'message': '메인 페이지 조회 성공',
             'data': {
-                'reviews': [menu.serialize() for menu in menus],
-                'restaurants': [restaurants.serialize() for restaurant in restaurants]
+                'reviews': [review.serialize() for review in reviews],
+                'restaurants': [restaurant.serialize() for restaurant in restaurants]
             }
         }
 
