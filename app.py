@@ -192,7 +192,8 @@ class ListAPI(Resource):
         if category == "all":
             restaurants = Restaurant.query.all()
         else:
-            restaurants = Restaurant.query.filter(Restaurant.category == category).all()
+            data = request.args.get('category')
+            restaurants = Restaurant.query.filter(Restaurant.category == data['category']).all()
         return_data = {
                 'message': '식당 리스트 조회 성공',
                 'data': [restaurant.serialize() for restaurant in restaurants]
