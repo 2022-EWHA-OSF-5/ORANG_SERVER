@@ -226,6 +226,22 @@ class MyReview(Resource):
         }
         return return_data
 
+#내가 찜한 북마크
+@api.route('/mypage/bookmarks')
+class MyReview(Resource):
+    def get(self): 
+        user_id = request.headers.get('User')
+        #user_id = request.headers
+
+        print('헤더',user_id)
+        bookmarks = Bookmark.query.filter(Bookmark.user_id == user_id).first()
+        restaurants = Restaurant.query.filter(Restaurant.id == Bookmark.restaurant_id).all()
+        return_data = {
+            'message': '내가 찜한 북마크 조회 성공',
+            'data': [restaurant.serialize() for restaurant in restaurants]
+        }
+        return return_data
+
 
 #리스트 화면 (필터링 - 카테고리)
 @api.route('/restaurants')
