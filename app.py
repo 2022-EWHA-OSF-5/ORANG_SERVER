@@ -187,21 +187,23 @@ class MyReview(Resource):
 @api.route('/restaurant')
 class ListAPI(Resource):
     def get(self):
-        category = request.headers.get('Category')
-        print('헤더', category)
-        if category == "all":
+        category = request.headers.get('category')
+
+        if not category:
             restaurants = Restaurant.query.all()
         else:
             data = request.args.get('category')
             restaurants = Restaurant.query.filter(Restaurant.category == data['category']).all()
+
         return_data = {
                 'message': '식당 리스트 조회 성공',
                 'data': [restaurant.serialize() for restaurant in restaurants]
             }
+            
         return return_data
 
 #맛집 세부 화면 - 정보
-@api.route('/restaurant/<int:primary_key>')
+@api.route('/restaurants/<int:primary_key>')
 class DetailPageAPI(Resource):
     def get(self, primary_key):
         restaurant_id = request.headers.get('Restaurant')
@@ -272,6 +274,7 @@ class BookmarkAPI(Resource):
     def post(self, primary_key):
         data = request.json
         bookmark = Bookmark(restaurant_id=primary_key, user_id=data['user_id'])
+
         try:
             db.session.add(bookmark)
             db.session.commit()
@@ -285,6 +288,7 @@ class BookmarkAPI(Resource):
         return_data = {
             'message': '북마크 추가 성공'
         }
+
         return return_data
 
 if __name__ == '__main__':
