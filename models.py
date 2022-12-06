@@ -101,3 +101,11 @@ class Review(db.Model):
 
     def __repr__(self):
         return '<Review %r>' % (self.content)
+
+class Bookmark(db.Model):
+    __tablename__ = 'bookmarks'
+    id = db.Column(db.Integer, primary_key=True)
+
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    
