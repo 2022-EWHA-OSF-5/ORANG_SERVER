@@ -30,6 +30,24 @@ db.app = app
 with app.app_context():
     db.create_all()
 
+
+#메인 페이지
+@api.route('/home')
+class Home(Resource):
+    def get(self):
+        menus = None
+        restaurants = None
+
+        return_data = {
+            'message': '메인 페이지 조회 성공',
+            'data': {
+                'reviews': [menu.serialize() for menu in menus],
+                'restaurants': [restaurants.serialize() for restaurant in restaurants]
+            }
+        }
+
+        return return_data
+
 #회원가입
 @api.route('/signup')
 class Signup(Resource):
@@ -147,10 +165,8 @@ class MenuAPI(Resource):
 #맛집 세부 화면 - 전체 메뉴 보기
 @api.route('/restaurants/<int:primary_key>/menus/all')
 class MenuDetailAPI(Resource):
-    def get(self, primary_key):
-        restaurant_id = request.headers.get('Restaurant')
-        print('헤더', restaurant_id)
-        menus = Menu.query.filter(Menu.restaurant_id == restaurant_id).all()
+    def get(self, pk):
+        menus = Menu.query.filter(Menu.restaurant_id == pk).all()
         return_data = {
             'message': '맛집 세부 화면(메뉴 전체) 조회 성공',
             'data': [menu.serialize() for menu in menus]
@@ -224,6 +240,7 @@ class MyReview(Resource):
             'message': '작성한 리뷰 조회 성공',
             'data': [review.serialize() for review in reviews]
         }
+
         return return_data
 
 
@@ -260,7 +277,6 @@ class DetailPageAPI(Resource):
         }
         return return_data
     
-
 
 #북마크 추가
 @api.route('/restaurants/<int:primary_key>/bookmark')
