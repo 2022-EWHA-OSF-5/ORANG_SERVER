@@ -30,6 +30,25 @@ db.app = app
 with app.app_context():
     db.create_all()
 
+
+#메인 페이지
+@api.route('/home')
+class Home(Resource):
+    def get(self):
+        reviews = Review.query.limit(5).all()
+        restaurants = Restaurant.query.order_by(Restaurant.score.desc()).limit(5).all()
+
+        return_data = {
+            'message': '메인 페이지 조회 성공',
+            'data': {
+                'reviews': [review.serialize() for review in reviews],
+                'restaurants': [restaurant.serialize() for restaurant in restaurants]
+            }
+        }
+
+        return return_data
+
+
 #회원가입
 @api.route('/signup')
 class Signup(Resource):
@@ -55,6 +74,7 @@ class Signup(Resource):
         }
         return return_data
 
+
 #로그인
 @api.route('/login')
 class Login(Resource):
@@ -67,6 +87,7 @@ class Login(Resource):
             'data': user.serialize()
         }
         return return_data
+
 
 #식당 등록
 @api.route('/restaurants')
@@ -98,6 +119,24 @@ class RestaurantAPI(Resource):
             'data': restaurant.serialize()
         }
         return return_data
+
+    #식당 조회
+    def get(self):
+        category = request.headers.get('category')
+
+        if not category:
+            restaurants = Restaurant.query.all()
+        else:
+            data = request.args.get('category')
+            restaurants = Restaurant.query.filter(Restaurant.category == data['category']).all()
+
+        return_data = {
+                'message': '식당 리스트 조회 성공',
+                'data': [restaurant.serialize() for restaurant in restaurants]
+            }
+            
+        return return_data
+
 
 #메뉴
 @api.route('/restaurants/<int:pk>/menus')
@@ -144,13 +183,11 @@ class MenuAPI(Resource):
         return return_data
 
 
-#맛집 세부 화면 - 전체 메뉴 보기
+#메뉴 전체 조회
 @api.route('/restaurants/<int:primary_key>/menus/all')
 class MenuDetailAPI(Resource):
-    def get(self, primary_key):
-        restaurant_id = request.headers.get('Restaurant')
-        print('헤더', restaurant_id)
-        menus = Menu.query.filter(Menu.restaurant_id == restaurant_id).all()
+    def get(self, pk):
+        menus = Menu.query.filter(Menu.restaurant_id == pk).all()
         return_data = {
             'message': '맛집 세부 화면(메뉴 전체) 조회 성공',
             'data': [menu.serialize() for menu in menus]
@@ -158,9 +195,10 @@ class MenuDetailAPI(Resource):
         return return_data
 
 
-#리뷰 등록
+#리뷰
 @api.route('/restaurants/<int:pk>/reviews')
 class ReviewAPI(Resource):
+    #리뷰 등록
     def post(self, pk): 
         if request.files["image"]:
             image_file=request.files["image"] 
@@ -171,6 +209,10 @@ class ReviewAPI(Resource):
 
         data = request.form
         review = Review(restaurant_id=pk, user_id=data['user_id'], content=data['content'], score=data['score'], image=image_path)
+        
+        restaurant = Restaurant.query.get(pk)
+        restaurant.review_count += 1 
+        restaurant.score = (restaurant.score*(restaurant.review_count-1)+data['score'])/restaurant.review_count
 
         try:
             db.session.add(review)
@@ -182,7 +224,7 @@ class ReviewAPI(Resource):
         finally:
             db.session.close() 
 
-        review = Review.query.filter(Review.id == review.id).first()
+        review = Review.query.get(review.id)
 
         return_data = {
             'message': '리뷰 등록 성공',
@@ -190,6 +232,7 @@ class ReviewAPI(Resource):
         }
         return return_data
 
+    #리뷰 조회
     def get(self, pk):
         reviews = Review.query.filter(Review.restaurant_id == pk, Review.id <= 3).all()
         return_data = {
@@ -199,7 +242,7 @@ class ReviewAPI(Resource):
         return return_data
 
 
-#맛집 세부 화면 - 리뷰 - 전체 리뷰 보기
+#리뷰 전체
 @api.route('/restaurants/<int:primary_key>/reviews/all')
 class ReviewDetailAPI(Resource):
     def get(self, pk):
@@ -224,7 +267,6 @@ class MyReview(Resource):
             'message': '작성한 리뷰 조회 성공',
             'data': [review.serialize() for review in reviews]
         }
-        return return_data
 
 #내가 찜한 북마크
 @api.route('/mypage/bookmarks')
@@ -277,7 +319,6 @@ class DetailPageAPI(Resource):
         return return_data
     
 
-
 #북마크 추가
 @api.route('/restaurants/<int:primary_key>/bookmark')
 class BookmarkAPI(Resource):
@@ -300,6 +341,7 @@ class BookmarkAPI(Resource):
         }
 
         return return_data
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
