@@ -48,6 +48,7 @@ class Home(Resource):
 
         return return_data
 
+
 #회원가입
 @api.route('/signup')
 class Signup(Resource):
@@ -73,6 +74,7 @@ class Signup(Resource):
         }
         return return_data
 
+
 #로그인
 @api.route('/login')
 class Login(Resource):
@@ -85,6 +87,7 @@ class Login(Resource):
             'data': user.serialize()
         }
         return return_data
+
 
 #식당 등록
 @api.route('/restaurants')
@@ -116,6 +119,24 @@ class RestaurantAPI(Resource):
             'data': restaurant.serialize()
         }
         return return_data
+
+    #식당 조회
+    def get(self):
+        category = request.headers.get('category')
+
+        if not category:
+            restaurants = Restaurant.query.all()
+        else:
+            data = request.args.get('category')
+            restaurants = Restaurant.query.filter(Restaurant.category == data['category']).all()
+
+        return_data = {
+                'message': '식당 리스트 조회 성공',
+                'data': [restaurant.serialize() for restaurant in restaurants]
+            }
+            
+        return return_data
+
 
 #메뉴
 @api.route('/restaurants/<int:pk>/menus')
@@ -244,26 +265,6 @@ class MyReview(Resource):
         return return_data
 
 
-#리스트 화면 (필터링 - 카테고리)
-@api.route('/restaurants')
-class ListAPI(Resource):
-    def get(self):
-        category = request.headers.get('category')
-
-        if not category:
-            restaurants = Restaurant.query.all()
-        else:
-            data = request.args.get('category')
-            restaurants = Restaurant.query.filter(Restaurant.category == data['category']).all()
-
-        return_data = {
-                'message': '식당 리스트 조회 성공',
-                'data': [restaurant.serialize() for restaurant in restaurants]
-            }
-            
-        return return_data
-
-
 #맛집 세부 화면 - 정보
 @api.route('/restaurants/<int:primary_key>')
 class DetailPageAPI(Resource):
@@ -300,6 +301,7 @@ class BookmarkAPI(Resource):
         }
 
         return return_data
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
