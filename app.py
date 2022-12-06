@@ -211,8 +211,8 @@ class ReviewAPI(Resource):
         review = Review(restaurant_id=pk, user_id=data['user_id'], content=data['content'], score=data['score'], image=image_path)
         
         restaurant = Restaurant.query.get(pk)
-        restaurant.review_count += 1 
-        restaurant.score = (restaurant.score*(restaurant.review_count-1)+data['score'])/restaurant.review_count
+        restaurant.review_count += 1
+        restaurant.score = (restaurant.score*(restaurant.review_count-1)+float(review.score))/restaurant.review_count
 
         try:
             db.session.add(review)
