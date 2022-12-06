@@ -122,13 +122,13 @@ class RestaurantAPI(Resource):
 
     #식당 조회
     def get(self):
-        category = request.headers.get('category')
+        category = request.args.get('category')
 
         if not category:
             restaurants = Restaurant.query.all()
         else:
             data = request.args.get('category')
-            restaurants = Restaurant.query.filter(Restaurant.category == data['category']).all()
+            restaurants = Restaurant.query.filter(Restaurant.category == category).all()
 
         return_data = {
                 'message': '식당 리스트 조회 성공',
