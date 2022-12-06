@@ -136,7 +136,7 @@ class MenuAPI(Resource):
         for menu in menus:
             print(menu)
 
-#메뉴 등록
+#리뷰 등록
 @api.route('/restaurants/<int:pk>/reviews')
 class ReviewAPI(Resource):
     def post(self, pk): 
@@ -148,6 +148,7 @@ class ReviewAPI(Resource):
             image_path=""
 
         data = request.form
+
         review = Review(restaurant_id=pk, user_id=data['user_id'], content=data['content'], score=data['score'], image=image_path)
 
         try:
