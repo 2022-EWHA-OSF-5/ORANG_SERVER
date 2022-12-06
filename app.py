@@ -183,7 +183,7 @@ class MenuAPI(Resource):
         return return_data
 
 
-#맛집 세부 화면 - 전체 메뉴 보기
+#메뉴 전체 조회
 @api.route('/restaurants/<int:primary_key>/menus/all')
 class MenuDetailAPI(Resource):
     def get(self, pk):
@@ -195,9 +195,10 @@ class MenuDetailAPI(Resource):
         return return_data
 
 
-#리뷰 등록
+#리뷰
 @api.route('/restaurants/<int:pk>/reviews')
 class ReviewAPI(Resource):
+    #리뷰 등록
     def post(self, pk): 
         if request.files["image"]:
             image_file=request.files["image"] 
@@ -208,6 +209,10 @@ class ReviewAPI(Resource):
 
         data = request.form
         review = Review(restaurant_id=pk, user_id=data['user_id'], content=data['content'], score=data['score'], image=image_path)
+        
+        restaurant = Restaurant.query.get(pk)
+        restaurant.review_count += 1 
+        restaurant.score = (restaurant.score*(restaurant.review_count-1)+data['score'])/restaurant.review_count
 
         try:
             db.session.add(review)
@@ -219,7 +224,7 @@ class ReviewAPI(Resource):
         finally:
             db.session.close() 
 
-        review = Review.query.filter(Review.id == review.id).first()
+        review = Review.query.get(review.id)
 
         return_data = {
             'message': '리뷰 등록 성공',
@@ -227,6 +232,7 @@ class ReviewAPI(Resource):
         }
         return return_data
 
+    #리뷰 조회
     def get(self, pk):
         reviews = Review.query.filter(Review.restaurant_id == pk, Review.id <= 3).all()
         return_data = {
@@ -236,7 +242,7 @@ class ReviewAPI(Resource):
         return return_data
 
 
-#맛집 세부 화면 - 리뷰 - 전체 리뷰 보기
+#리뷰 전체
 @api.route('/restaurants/<int:primary_key>/reviews/all')
 class ReviewDetailAPI(Resource):
     def get(self, pk):
