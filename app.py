@@ -173,9 +173,7 @@ class MenuAPI(Resource):
 
     #메뉴 조회
     def get(self, pk):
-        restaurant_id = request.headers.get('Restaurant')
-        print('헤더', restaurant_id)
-        menus = Menu.query.filter(Menu.restaurant_id == restaurant_id, Menu.id <= 3).all()
+        menus = Menu.query.filter(Menu.restaurant_id == pk, Menu.id <= 3).all()
         return_data = {
             'message': '맛집 세부 화면(메뉴) 조회 성공',
             'data': [menu.serialize() for menu in menus]
@@ -184,7 +182,7 @@ class MenuAPI(Resource):
 
 
 #메뉴 전체 조회
-@api.route('/restaurants/<int:primary_key>/menus/all')
+@api.route('/restaurants/<int:pk>/menus/all')
 class MenuDetailAPI(Resource):
     def get(self, pk):
         menus = Menu.query.filter(Menu.restaurant_id == pk).all()
@@ -244,7 +242,7 @@ class ReviewAPI(Resource):
 
 
 #리뷰 전체
-@api.route('/restaurants/<int:primary_key>/reviews/all')
+@api.route('/restaurants/<int:pk>/reviews/all')
 class ReviewDetailAPI(Resource):
     def get(self, pk):
         reviews = Review.query.filter(Review.restaurant_id == pk).all()
@@ -267,6 +265,8 @@ class MyReview(Resource):
             'message': '작성한 리뷰 조회 성공',
             'data': [review.serialize() for review in reviews]
         }
+
+        return return_data
 
 #내가 찜한 북마크
 @api.route('/mypage/bookmarks')
@@ -308,12 +308,10 @@ class ListAPI(Resource):
 
 
 #맛집 세부 화면 - 정보
-@api.route('/restaurants/<int:primary_key>')
+@api.route('/restaurants/<int:pk>')
 class DetailPageAPI(Resource):
-    def get(self, primary_key):
-        restaurant_id = request.headers.get('Restaurant')
-        print('헤더', restaurant_id)
-        restaurants = Restaurant.query.filter(Restaurant.id == restaurant_id).all()
+    def get(self, pk):
+        restaurants = Restaurant.query.filter(Restaurant.id == pk).all()
         return_data = {
             'message': '맛집 세부 화면(정보) 조회 성공',
             'data': [restaurant.serialize() for restaurant in restaurants]
@@ -322,11 +320,11 @@ class DetailPageAPI(Resource):
     
 
 #북마크 추가
-@api.route('/restaurants/<int:primary_key>/bookmarks')
+@api.route('/restaurants/<int:pk>/bookmarks')
 class BookmarkAPI(Resource):
-    def post(self, primary_key):
+    def post(self, pk):
         data = request.json
-        bookmark = Bookmark(restaurant_id=primary_key, user_id=data['user_id'])
+        bookmark = Bookmark(restaurant_id=pk, user_id=data['user_id'])
 
         try:
             db.session.add(bookmark)
