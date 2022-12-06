@@ -122,13 +122,13 @@ class RestaurantAPI(Resource):
 
     #식당 조회
     def get(self):
-        category = request.headers.get('category')
+        category = request.args.get('category')
 
         if not category:
             restaurants = Restaurant.query.all()
         else:
             data = request.args.get('category')
-            restaurants = Restaurant.query.filter(Restaurant.category == data['category']).all()
+            restaurants = Restaurant.query.filter(Restaurant.category == category).all()
 
         return_data = {
                 'message': '식당 리스트 조회 성공',
@@ -260,7 +260,6 @@ class ReviewDetailAPI(Resource):
 class MyReview(Resource):
     def get(self): 
         user_id = request.headers.get('User')
-        #user_id = request.headers
 
         print('헤더',user_id)
         reviews = Review.query.filter(Review.user_id == user_id).all()
@@ -274,15 +273,17 @@ class MyReview(Resource):
 class MyReview(Resource):
     def get(self): 
         user_id = request.headers.get('User')
-        #user_id = request.headers
 
-        print('헤더',user_id)
-        bookmarks = Bookmark.query.filter(Bookmark.user_id == user_id).first()
-        restaurants = Restaurant.query.filter(Restaurant.id == Bookmark.restaurant_id).all()
+        restaurants = []
+        bookmarks = Bookmark.query.filter(Bookmark.user_id == user_id)
+        for bookmark in bookmarks:
+            restaurants.append(Restaurant.query.get(bookmark.restaurant_id))
+            
         return_data = {
             'message': '내가 찜한 북마크 조회 성공',
             'data': [restaurant.serialize() for restaurant in restaurants]
         }
+
         return return_data
 
 
@@ -321,7 +322,7 @@ class DetailPageAPI(Resource):
     
 
 #북마크 추가
-@api.route('/restaurants/<int:primary_key>/bookmark')
+@api.route('/restaurants/<int:primary_key>/bookmarks')
 class BookmarkAPI(Resource):
     def post(self, primary_key):
         data = request.json
