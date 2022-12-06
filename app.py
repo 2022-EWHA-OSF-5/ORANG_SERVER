@@ -153,33 +153,43 @@ class RestaurantAPI(Resource):
 class MenuAPI(Resource):
     #메뉴 등록
     def post(self, pk): 
-        if request.files["image"]:
-            image_file=request.files["image"] 
-            image_path = "static/image/menu/{}".format(image_file.filename)
-            image_file.save(image_path) 
-        else:
-            image_path=""
-
         data = request.form
-        menu = Menu(restaurant_id=pk, name=data['name'], price=data['price'], image=image_path)
+        menu = Menu.query.filter_by(restaurant_id=pk, name=data['name']).first()
 
-        try:
-            db.session.add(menu)
-            db.session.commit()
-            db.session.refresh(menu)
-        except:
-            db.session.rollback()
-            raise
-        finally:
-            db.session.close() 
+        if menu:
+            return_data = {
+                'message': '이미 등록된 메뉴',
+                'data': menu.serialize()
+            }
+        else:
+            if request.files["image"]:
+                image_file=request.files["image"] 
+                image_path = "static/image/menu/{}".format(image_file.filename)
+                image_file.save(image_path) 
+            else:
+                image_path=""
 
-        menu = Menu.query.filter(Menu.id == menu.id).first()
+            menu = Menu(restaurant_id=pk, name=data['name'], price=data['price'], image=image_path)
 
-        return_data = {
-            'message': '메뉴 등록 성공',
-            'data': menu.serialize()
-        }
+            try:
+                db.session.add(menu)
+                db.session.commit()
+                db.session.refresh(menu)
+            except:
+                db.session.rollback()
+                raise
+            finally:
+                db.session.close() 
+
+            menu = Menu.query.get(menu.id)
+
+            return_data = {
+                'message': '메뉴 등록 성공',
+                'data': menu.serialize()
+            }
+
         return return_data
+
 
     #메뉴 조회
     def get(self, pk):
