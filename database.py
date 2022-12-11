@@ -20,8 +20,12 @@ try:
     menu_list = [(1, '치킨라이스(특)', '13000원', 'static/image/menu/sample.jpeg', 1), (2, '치킨라이스(보통)', '9000원', 'static/image/menu/sample.jpeg', 1), (3, '싱하맥주', '5000원', 'static/image/menu/sample.jpeg', 1), (4, '콜라', '2000원', 'static/image/menu/sample.jpeg', 1)]
     cur.executemany("INSERT INTO menus VALUES(?,?,?,?,?);", menu_list)
     
-    review_list = [(1, '너무 맛있어요!', '5', 'static/image/review/sample.jpeg', 1, 1), (2, '최고입니당', '5', 'static/image/review/sample.jpeg', 1, 2), (3, '양이 조금 부족했어요', '4', 'static/image/review/sample.jpeg', 1, 3), (4, '까이 최고...', '5', 'static/image/review/sample.jpeg', 1, 4)]
+    review_list = [(1, '너무 맛있어요!', '5', 'static/image/review/sample.jpeg', 1, 1), (2, '최고입니당', '5', 'static/image/review/sample.jpeg', 1, 2), (3, '양이 조금 부족했어요', '4', 'static/image/review/sample.jpeg', 1, 3), (4, '까이 최고...', '5', 'static/image/review/sample.jpeg', 1, 4),(5, '까이 최고...', '5', 'static/image/review/sample.jpeg', 1, 1)]
     cur.executemany("INSERT INTO reviews VALUES (?,?,?,?,?,?);", review_list)
+
+    bookmark_list = [(1, 1, 1),(2, 2, 1), (3, 3, 1) ]
+    cur.executemany("INSERT INTO bookmarks VALUES (?,?,?);", bookmark_list)
+
 
     conn.commit()
 

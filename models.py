@@ -95,10 +95,13 @@ class Review(db.Model):
         return {
             'id': self.id,
             'username': user.username,
+            'user_id' : self.user_id,
             'restaurant': restaurant.name,
             'content': self.content,
             'score': self.score,
-            'image': self.image
+            'image': self.image,
+            'restaurant_id' : self.restaurant_id,
+            
         }
 
     def __repr__(self):
