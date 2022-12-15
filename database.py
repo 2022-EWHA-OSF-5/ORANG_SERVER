@@ -21,10 +21,12 @@ try:
     (21, '굴국밥', '12000원', 'static/image/menu/menu6_3.JPG', 6)]
     cur.executemany("INSERT INTO menus VALUES(?,?,?,?,?);", menu_list)
     
+    '''
+
     review_list = [(1, '까이는 진짜 언제 먹어도 너무 맛있어요... 부드럽고 든든하고 짱입니당', '5', 'static/image/review/rv1.JPG', 1, 1), 
     (2, '고기 촉촉하고 치즈감자 고소하고 양도 많아요ㅎㅎ 계란국까지 최고의 한끼!!!', '5', 'static/image/review/rv2.JPG', 2, 1), (3, '저번보다 김치나베 국물 양이 조금 부족했어요.. 아쉽ㅠㅠ', '4', 'static/image/review/rv3.JPG', 3, 1), 
     (4, '자극적인 맛을 좋아하면 좀 싱겁게 느껴질 수도 있지만 나한텐 딱 맞았음~~ 반찬도 다양하고 맛도 괜찮고 깔끔!', '5', 'static/image/review/rv4.JPG', 4, 1),(5, '오랜만에 갔는데 여전히 맛있당 샐러드랑 파인애플도 있어서 더 좋음ㅎㅎ 다음엔 굴국밥 먹어봐야지', '5', 'static/image/review/rv5.JPG', 6, 1)]
-    cur.executemany("INSERT INTO reviews VALUES (?,?,?,?,?,?);", review_list)
+    cur.executemany("INSERT INTO reviews VALUES (?,?,?,?,?,?);", review_list)    '''
 
     bookmark_list = [(1, 1, 1),(2, 2, 1), (3, 3, 1) ]
     cur.executemany("INSERT INTO bookmarks VALUES (?,?,?);", bookmark_list)
