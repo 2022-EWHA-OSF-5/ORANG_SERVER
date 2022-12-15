@@ -3,5 +3,4 @@ __pycache__
 venv
 authentication
 config.py
-db.sqlite
 instance
