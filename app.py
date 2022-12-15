@@ -193,7 +193,7 @@ class MenuAPI(Resource):
 
     #메뉴 조회
     def get(self, pk):
-        menus = Menu.query.filter(Menu.restaurant_id == pk, Menu.id <= 3).all()
+        menus = Menu.query.filter(Menu.restaurant_id == pk).limit(3).all()
         return_data = {
             'message': '맛집 세부 화면(메뉴) 조회 성공',
             'data': [menu.serialize() for menu in menus]
@@ -253,7 +253,7 @@ class ReviewAPI(Resource):
 
     #리뷰 조회
     def get(self, pk):
-        reviews = Review.query.filter(Review.restaurant_id == pk, Review.id <= 3).all()
+        reviews = Review.query.filter(Review.restaurant_id == pk).limit(3).all()
         return_data = {
             'message': '맛집 세부 화면(리뷰) 조회 성공',
             'data': [review.serialize() for review in reviews]
