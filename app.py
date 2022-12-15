@@ -220,7 +220,7 @@ class ReviewAPI(Resource):
     def post(self, pk): 
         if request.files["image"]:
             image_file=request.files["image"] 
-            image_path = "static/image/menu/{}".format(image_file.filename)
+            image_path = "static/image/review/{}".format(image_file.filename)
             image_file.save(image_path) 
         else:
             image_path=""
