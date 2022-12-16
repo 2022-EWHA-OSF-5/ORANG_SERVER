@@ -21,7 +21,12 @@ try:
         (4, '소녀방앗간', 'static/image/restaurant/rst4.JPG', '정문', '서울특별시 서대문구 대현동 34-19 1층', '한식', '050714450603', '소녀방앗간은 땅과 공기가 줄 수 있는 에너지를 온전히 담은 재료로 수준 높은 식문화를 전합니다.', 'http://www.millcompany.co.kr/', '5', '1'), 
         (5, '비아37', 'static/image/restaurant/rst5.JPG', '정문', '서울특별시 서대문구 대현동 37-36', '양식', '050713630900', '이대 안의 작은 유럽을 경험할 수 있는 감성 이탈리안 레스토랑 비아37, 좋은 사람과 최고의 이탈리안을 느껴보세요.', 'https://blog.naver.com/coffeekyum', '0', '0'), 
         (6, '모미지식당', 'static/image/restaurant/rst6.JPG', '정문', ' 서울특별시 서대문구 대현동 37-75 2층', '한식', '050713162029', '모미지식당 11월 메뉴 소고기 가지덮밥 9500원, 육회덮밥 11000원, 굴국밥 12000원', 'http://www.instagram.com/momiji_cook', '5', '1'),
-        (7, '낭만식탁', 'static/image/restaurant/rst7.jpg', '정문', '서울특별시 서대문구 대현동 56-110', '일식', '023121238', '이대 스타벅스 맞은편 계단으로 내려오세요. 일요일은 쉬는 날입니다.', 'https://www.instagram.com/romantic_table01', '4', '0')
+        (7, '낭만식탁', 'static/image/restaurant/rst7.jpg', '정문', '서울특별시 서대문구 대현동 56-110', '일식', '023121238', '이대 스타벅스 맞은편 계단으로 내려오세요. 일요일은 쉬는 날입니다.', 'https://www.instagram.com/romantic_table01', '0', '0'),
+        (8, '딸기골', 'static/image/restaurant/rst8.jpg', '후문', '서울특별시 서대문구 연대동문길 29', '분식', '033635563', '이대에 위치한 딸기골 분식입니다. 생방송 금요와이드 40회 출연', ' ', '5', '0'),
+        (9, '란주탕슉', 'static/image/restaurant/rst9.jpg', '정문', '서울특별시 서대문구 이화여대2가길 18', '중식', '050713249370', '국내산 등심만을 사용하는 꿔바로우에 매콤새콤달콤한 소스가 특징입니다. 모든 면은 직접 반죽하여 칼로 쳐내어 만드는 두툼한 도삭면으로 요리됩니다. 기본적으로 어린 아이들이 먹기에는 모두 매콤할 수 있으나 사천자장도삭면과 새우볶음밥은 아이들만을 위한 변경이 가능합니다.', ' ', '0', '0'),
+        (10, '방콕익스프레스', 'static/image/restaurant/rst10.jpg', '신기역', '서울특별시 서대문구 연세로2길 91', '아시아', '0264017793', '신촌 방콕익스프레스 가성비 좋은 태국 음식 맛집', 'https://www.bangkokexp.com/', '0', '0'),
+        (11, '아콘스톨', 'static/image/restaurant/rst11.jpg', '신기역', '서울특별시 서대문구 신촌역로 17 1층 110호', '분식', '023641301', '경의선 신촌기차역에서 2분, 이대 정문에서 5분 거리에 있는 도시락, 김밥 판매점입니다. 실내에 8석, 실외에 4석의 식사 장소도 있어요. 혼밥, 혼술, 포장 모두 가능해요. 즐거운 음악과 식사를 즐기러 오세요.', ' ', '0', '0'),
+        (12, '고냉지', 'static/image/restaurant/rst12.jpg', '신기역', '서울특별시 서대문구 연세로2마길 30', '한식', '023130845', '이대 앞에 학생들이 많이 찾는 고냉지 김치찌개입니다. 입맛대로 골라 먹는 신개념 토핑 김치찌개로 돼지고기, 부대, 참치, 만두, 순두부 등 다양한 토핑을 고를 수 있습니다. 찌개 1인분에 토핑재료 1가지를 선택할 수 있으며 보쌈과 같이 먹는 고냉지 정식, 비빔밥과 함께 먹을 수 있는 비빔밥 정식이 있습니다.', '-', '0', '0'),
         ]
     cur.executemany("INSERT INTO restaurants VALUES(?,?,?,?,?,?,?,?,?,?,?);", restaurant_list)
  
@@ -32,7 +37,12 @@ try:
         (12, '산나물밥', '8800원', 'static/image/menu/menu4_1.JPG', 4), (13, '고춧가루제육볶음', '11800원', 'static/image/menu/menu4_2.JPG', 4), (14, '참명란비빔밥', '10800원', 'static/image/menu/menu4_3.JPG', 4),
         (15, '바질페스토 크림 뇨끼', '20000원', 'static/image/menu/menu5_1.JPG', 5), (16, '클래식 라자냐', '20000원', 'static/image/menu/menu5_2.JPG', 5), (17, '링귀니 스콜리오', '23000원', 'static/image/menu/menu5_3.JPG', 5),
         (18, '채끝 스테이크', '38000원', 'static/image/menu/menu5_4.JPG', 5), (19, '육회덮밥', '11000원', 'static/image/menu/menu6_1.JPG', 6), (20, '소고기가지덮밥', '9500원', 'static/image/menu/menu6_2.JPG', 6),
-        (21, '굴국밥', '12000원', 'static/image/menu/menu6_3.JPG', 6)
+        (21, '굴국밥', '12000원', 'static/image/menu/menu6_3.JPG', 6), (22, '사케동', '12000원', 'static/image/menu/menu7_1.png', 7), (23, '간장새우', '10000원', 'static/image/menu/menu7_2.jpg', 7),
+        (24, '치즈김치순두부', '5500원', 'static/image/menu/menu8_1.png', 8), (25, '부대찌개', '5500원', 'static/image/menu/menu8_2.png', 8), (26, '김치알밥', '5500원', 'static/image/menu/menu8_3.jpeg', 8), (27, '떡볶이', '3000원', 'static/image/menu/menu8_4.jpeg', 8),
+        (28, '사천해물자장도삭면', '6000원', 'static/image/menu/menu9_1.jpg', 9), (29, '사천짬뽕도삭면', '9000원', 'static/image/menu/menu9_2.jpg', 9), (30, '사천꿔빠로우(R)', '17000원', 'static/image/menu/menu9_3.jpg', 9), (32, '사천탕수새우(R)', '2300원', 'static/image/menu/menu9_4.jpg', 9),
+        (33, '뿌팟퐁 커리', '13500원', 'static/image/menu/menu10_1.jpg', 10), (34, '베트남 소고기 쌀국수', '7500원', 'static/image/menu/menu10_2.jpg', 10), (35, '새우팟타이', '7500원', 'static/image/menu/menu10_3.jpg', 10),
+        (36, '순대떡볶음', '3900원', 'static/image/menu/menu11_1.jpg', 11), (37, '참치밥샌드', '4000원', 'static/image/menu/menu11_2.jpeg', 11), (38, '김밥', '3000원', 'static/image/menu/menu11_3.jpg', 11), 
+        (39, '고냉지 정식', '14000원', 'static/image/menu/menu12_1.jpeg', 12), (40, '김치찌개+비빔밥', '8000원', 'static/image/menu/menu12_2.jpeg', 12), (41, '보쌈(소)', '25000원', 'static/image/menu/menu12_3.jpeg', 12), (42, '계란말이', '8000원', 'static/image/menu/menu12_4.jpg', 12)
         ]
     cur.executemany("INSERT INTO menus VALUES(?,?,?,?,?);", menu_list)
     
