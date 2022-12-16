@@ -20,7 +20,8 @@ try:
         (3, '돈천동식당', 'static/image/restaurant/rst3.JPG', '정문', '서울특별시 서대문구 이화여대길 52-35 2층', '일식', '01077348321', '이대역 근처, 맛있으면서 저렴한 돈천동식당! 김치나베돈까스', ' ', '4', '1'),
         (4, '소녀방앗간', 'static/image/restaurant/rst4.JPG', '정문', '서울특별시 서대문구 대현동 34-19 1층', '한식', '050714450603', '소녀방앗간은 땅과 공기가 줄 수 있는 에너지를 온전히 담은 재료로 수준 높은 식문화를 전합니다.', 'http://www.millcompany.co.kr/', '5', '1'), 
         (5, '비아37', 'static/image/restaurant/rst5.JPG', '정문', '서울특별시 서대문구 대현동 37-36', '양식', '050713630900', '이대 안의 작은 유럽을 경험할 수 있는 감성 이탈리안 레스토랑 비아37, 좋은 사람과 최고의 이탈리안을 느껴보세요.', 'https://blog.naver.com/coffeekyum', '0', '0'), 
-        (6, '모미지식당', 'static/image/restaurant/rst6.JPG', '정문', ' 서울특별시 서대문구 대현동 37-75 2층', '한식', '050713162029', '모미지식당 11월 메뉴 소고기 가지덮밥 9500원, 육회덮밥 11000원, 굴국밥 12000원', 'http://www.instagram.com/momiji_cook', '5', '1')
+        (6, '모미지식당', 'static/image/restaurant/rst6.JPG', '정문', ' 서울특별시 서대문구 대현동 37-75 2층', '한식', '050713162029', '모미지식당 11월 메뉴 소고기 가지덮밥 9500원, 육회덮밥 11000원, 굴국밥 12000원', 'http://www.instagram.com/momiji_cook', '5', '1'),
+        (7, '낭만식탁', 'static/image/restaurant/rst7.jpg', '정문', '서울특별시 서대문구 대현동 56-110', '일식', '023121238', '이대 스타벅스 맞은편 계단으로 내려오세요. 일요일은 쉬는 날입니다.', 'https://www.instagram.com/romantic_table01', '4', '0')
         ]
     cur.executemany("INSERT INTO restaurants VALUES(?,?,?,?,?,?,?,?,?,?,?);", restaurant_list)
  
