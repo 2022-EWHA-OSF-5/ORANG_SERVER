@@ -27,6 +27,13 @@ try:
         (10, '방콕익스프레스', 'static/image/restaurant/rst10.jpg', '신기역', '서울특별시 서대문구 연세로2길 91', '아시아', '0264017793', '신촌 방콕익스프레스 가성비 좋은 태국 음식 맛집', 'https://www.bangkokexp.com/', '0', '0'),
         (11, '아콘스톨', 'static/image/restaurant/rst11.jpg', '신기역', '서울특별시 서대문구 신촌역로 17 1층 110호', '분식', '023641301', '경의선 신촌기차역에서 2분, 이대 정문에서 5분 거리에 있는 도시락, 김밥 판매점입니다. 실내에 8석, 실외에 4석의 식사 장소도 있어요. 혼밥, 혼술, 포장 모두 가능해요. 즐거운 음악과 식사를 즐기러 오세요.', ' ', '0', '0'),
         (12, '고냉지', 'static/image/restaurant/rst12.jpg', '신기역', '서울특별시 서대문구 연세로2마길 30', '한식', '023130845', '이대 앞에 학생들이 많이 찾는 고냉지 김치찌개입니다. 입맛대로 골라 먹는 신개념 토핑 김치찌개로 돼지고기, 부대, 참치, 만두, 순두부 등 다양한 토핑을 고를 수 있습니다. 찌개 1인분에 토핑재료 1가지를 선택할 수 있으며 보쌈과 같이 먹는 고냉지 정식, 비빔밥과 함께 먹을 수 있는 비빔밥 정식이 있습니다.', '-', '0', '0'),
+        (19, '리카', 'static/image/restaurant/rst19.jpg', '정문', '서울 서대문구 이화여대길 72-3 2층', '일식', '00000000000', '분위기 좋고 깔끔한 이자카야', '-', '0', '0'),
+        (20, '전티마이', 'static/image/restaurant/rst20.jpg', '정문', '서울 서대문구 이화여대길 59 메르체쇼핑몰 3층', '아시아', '07082501235', '베트남 현지의 맛과 착한가격 4,500원, 그리고 보면 놀라는 넉넉한 양', '-', '0', '0'),
+        (21, '스탠바이키친', 'static/image/restaurant/rst21.jpeg', '후문', '서울 서대문구 연대동문길 49', '양식', '023656353', '연대 외국어학당과 외국인 기숙사가 가까워 외국 친구들이 많이 이용하는 샌드위치 맛집!', '-', '0', '0'),
+        (22, '아웃닭', 'static/image/restaurant/rst22.jpg', '정문', '서울 서대문구 이화여대5길 16', '양식', '023634375', '맛도 좋고 가성비도 좋은 이대 앞 치킨 호프집', 'http://www.outdark.co.kr/', '0', '0'),
+        (23, '너스레', 'static/image/restaurant/rst23.jpeg', '정문', '서울 서대문구 이화여대7길 22', '한식', '023642221', '이대 레몬소주로 유명한 술집', '-', '0', '0'),
+        (24, '원즈오운', 'static/image/restaurant/rst24.jpg', '정문', '서울 서대문구 이화여대길 20 1층', '양식', '023133190', '매일 굽는 빵과 신선한 재료로 풍부한 맛을 선물해드리고 싶어요. 맛있는 샌드위치, 커피 한 잔과 함께 원즈오운에서 편안하고 여유로운 나만의 시간을 보내다 가세요.', 'https://www.instagram.com/ones.own.bakery/?utm_medium=copy_link', '0', '0'),
+
         ]
     cur.executemany("INSERT INTO restaurants VALUES(?,?,?,?,?,?,?,?,?,?,?);", restaurant_list)
  
@@ -42,7 +49,25 @@ try:
         (28, '사천해물자장도삭면', '6000원', 'static/image/menu/menu9_1.jpg', 9), (29, '사천짬뽕도삭면', '9000원', 'static/image/menu/menu9_2.jpg', 9), (30, '사천꿔빠로우(R)', '17000원', 'static/image/menu/menu9_3.jpg', 9), (32, '사천탕수새우(R)', '2300원', 'static/image/menu/menu9_4.jpg', 9),
         (33, '뿌팟퐁 커리', '13500원', 'static/image/menu/menu10_1.jpg', 10), (34, '베트남 소고기 쌀국수', '7500원', 'static/image/menu/menu10_2.jpg', 10), (35, '새우팟타이', '7500원', 'static/image/menu/menu10_3.jpg', 10),
         (36, '순대떡볶음', '3900원', 'static/image/menu/menu11_1.jpg', 11), (37, '참치밥샌드', '4000원', 'static/image/menu/menu11_2.jpeg', 11), (38, '김밥', '3000원', 'static/image/menu/menu11_3.jpg', 11), 
-        (39, '고냉지 정식', '14000원', 'static/image/menu/menu12_1.jpeg', 12), (40, '김치찌개+비빔밥', '8000원', 'static/image/menu/menu12_2.jpeg', 12), (41, '보쌈(소)', '25000원', 'static/image/menu/menu12_3.jpeg', 12), (42, '계란말이', '8000원', 'static/image/menu/menu12_4.jpg', 12)
+        (39, '고냉지 정식', '14000원', 'static/image/menu/menu12_1.jpeg', 12), (40, '김치찌개+비빔밥', '8000원', 'static/image/menu/menu12_2.jpeg', 12), (41, '보쌈(소)', '25000원', 'static/image/menu/menu12_3.jpeg', 12), (42, '계란말이', '8000원', 'static/image/menu/menu12_4.jpg', 12),
+        (60, '간장새우장', '16000원', 'static/image/menu/menu19_1.jpg', 19),
+        (61, '새우덴뿌라', '18000원', 'static/image/menu/menu19_2.jpg', 19),
+        (62, '고추치킨 가라아게', '18000원', 'static/image/menu/menu19_3.jpg', 19),
+        (63, '소고기 쌀국수', '4900원', 'static/image/menu/menu20_1.jpg', 20),
+        (64, '파인애플 볶음밥', '5500원', 'static/image/menu/menu20_2.JPG', 20),
+        (65, '프리미엄 쌀국수', '5500원', 'static/image/menu/menu20_3.jpeg', 20),
+        (66, '갈릭 쉬림프 아보카도', '9300원', 'static/image/menu/menu21_1.jpg', 21),
+        (67, '필리 치즈 스테이크', '8800원', 'static/image/menu/menu21_2.jpg', 21),
+        (68, '모짜렐라 토마토', '8300원', 'static/image/menu/menu21_3.jpg', 21),
+        (69, '마틴 간장치킨', '19900원', 'static/image/menu/menu22_1.jpg', 22),
+        (70, '튀김모둠', '15000원', 'static/image/menu/menu22_2.jpg', 22),
+        (71, '봄베이 하이볼', '7800원', 'static/image/menu/menu22_3.jpg', 22),
+        (72, '너스레전', '14000원', 'static/image/menu/menu23_1.jpg', 23),
+        (73, '두부김치', '13000원', 'static/image/menu/menu23_2.jpg', 23),
+        (74, '계란찜', '11000원', 'static/image/menu/menu23_3.jpg', 23),
+        (75, '잠봉뵈르', '8900원', 'static/image/menu/menu24_1.jpg', 24),
+        (76, '사과 콩포트 브리치즈 바게트', '8500원', 'static/image/menu/menu24_2.jpg', 24),
+        (77, '초당옥수수 스프', '5000원', 'static/image/menu/menu24_3.jpg', 24)
         ]
     cur.executemany("INSERT INTO menus VALUES(?,?,?,?,?);", menu_list)
     
