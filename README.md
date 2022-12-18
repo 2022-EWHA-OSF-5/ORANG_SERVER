@@ -5,9 +5,6 @@
 git clone https://github.com/2022-EWHA-OSP-5/ORANG_SERVER.git
 pip install -r requirements.txt
 python app.py
-ctrl^c
-python database.py
-python app.py
 ```
 
 ### Requirements
