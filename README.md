@@ -13,7 +13,6 @@ Python==3.8.6
 Flask==2.2.2
 Flask-Cors==3.0.10
 Flask-Migrate==4.0.0
-Flask-RESTful==0.3.9
 flask-restx==1.0.3
 Flask-SQLAlchemy==3.0.2
 Pillow==9.3.0
